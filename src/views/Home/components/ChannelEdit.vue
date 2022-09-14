@@ -1,7 +1,6 @@
 <template>
   <div class="channel-edit">
     <!-- 我的频道 -->
-    <!-- 标题  -->
     <van-cell title="我的频道">
       <van-button
         @click="isEdit = !isEdit"
@@ -11,6 +10,7 @@
         style="color: red; border-color: red"
         >{{ isEdit ? '完成' : '编辑' }}</van-button
       >
+      <!-- 标题  -->
     </van-cell>
     <div class="my-pannel">
       <van-grid gutter="10" :border="false">
@@ -38,6 +38,7 @@
           :key="item.id"
           icon="plus"
           :text="item.name"
+          @click="$emit('add-channel', item)"
         />
         <!-- <template #icon>
             <van-icon name="cross" />
@@ -77,9 +78,9 @@ export default {
       const { data } = await getAllChannelAPI()
       this.allchannels = data.data.channels
     },
-    handleMyChannel({ name }, index) {
+    handleMyChannel({ name, id }, index) {
       if (this.isEdit && name !== '推荐') {
-        console.log('删除频道', name)
+        this.$emit('del-channel', id)
       } else {
         this.$emit('change-active', index)
       }
